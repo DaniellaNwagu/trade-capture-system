@@ -4,8 +4,8 @@
 Successfully fixed all failing unit tests in the trading application backend. All 61 tests now pass with 0 failures, 0 errors, and 0 skipped tests.
 
 ## Test Results Summary
-- **Total Tests**: 61
-- **Passing**: 61 
+- **Total Tests**: 64
+- **Passing**: 64 
 - **Failing**: 0 
 - **Errors**: 0 
 - **Skipped**: 0 
@@ -88,7 +88,28 @@ Successfully fixed all failing unit tests in the trading application backend. Al
 **Files Modified**:
 - `backend/src/main/java/com/technicalchallenge/controller/TradeLegController.java`
 
-### 5. Environment Setup Fixes
+### 5. UserControllerTest - 4/4 Tests Passing
+
+**Problem:**  
+Unit tests for `UserController` were incomplete, covering only the GET endpoint. POST, PUT, and DELETE operations were not tested, leaving critical controller functionality unverified.
+
+**Root Cause Analysis:**  
+- Missing test methods for user creation, update, and deletion  
+- Lack of consistent mock setup for service and mapper interactions in new endpoints  
+
+**Solution Implemented:**  
+- Added unit tests for:  
+  - `POST /api/users` - verifies user creation (201 Created)  
+  - `PUT /api/users/{id}` - verifies user update (200 OK)  
+  - `DELETE /api/users/{id}` - verifies user deletion (204 No Content)  
+  - `GET /api/users` - maintained existing coverage  
+- Configured mocks for `ApplicationUserService` and `ApplicationUserMapper` to support all CRUD operations  
+- Ensured correct HTTP status expectations for each endpoint  
+
+**Files Modified:**  
+- `backend/src/test/java/com/technicalchallenge/controller/UserControllerTest.java`
+
+### 6. Environment Setup Fixes
 
 **Problem**: Java version compatibility issues causing compilation failures.
 
