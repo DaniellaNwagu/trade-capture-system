@@ -4,8 +4,8 @@
 Successfully fixed all failing unit tests in the trading application backend. All 61 tests now pass with 0 failures, 0 errors, and 0 skipped tests.
 
 ## Test Results Summary
-- **Total Tests**: 61
-- **Passing**: 61 
+- **Total Tests**: 67
+- **Passing**: 67
 - **Failing**: 0 
 - **Errors**: 0 
 - **Skipped**: 0 
@@ -88,7 +88,57 @@ Successfully fixed all failing unit tests in the trading application backend. Al
 **Files Modified**:
 - `backend/src/main/java/com/technicalchallenge/controller/TradeLegController.java`
 
-### 5. Environment Setup Fixes
+### 5. UserControllerTest - 4/4 Tests Passing
+
+**Problem:**  
+Unit tests for `UserController` were incomplete, covering only the GET endpoint. POST, PUT, and DELETE operations were not tested, leaving critical controller functionality unverified.
+
+**Root Cause Analysis:**  
+- Missing test methods for user creation, update, and deletion  
+- Lack of consistent mock setup for service and mapper interactions in new endpoints  
+
+**Solution Implemented:**  
+- Added unit tests for:  
+  - `POST /api/users` - verifies user creation (201 Created)  
+  - `PUT /api/users/{id}` - verifies user update (200 OK)  
+  - `DELETE /api/users/{id}` - verifies user deletion (204 No Content)  
+  - `GET /api/users` - maintained existing coverage  
+- Configured mocks for `ApplicationUserService` and `ApplicationUserMapper` to support all CRUD operations  
+- Ensured correct HTTP status expectations for each endpoint  
+
+**Files Modified:**  
+- `backend/src/test/java/com/technicalchallenge/controller/UserControllerTest.java`
+
+### 6. CounterpartyServiceTest – 4/4 Tests Passing
+
+**Problem**  
+The service layer for `CounterpartyService` initially included only a test for `getCounterpartyById()`.  
+Create, update, and delete operations were untested, leaving significant gaps in CRUD coverage.
+
+
+**Root Cause Analysis**  
+- Missing unit tests for `saveCounterparty()`, `updateCounterparty()`, and `deleteCounterparty()`  
+- Lack of proper mock setup for repository interactions in these service methods  
+
+
+**Solution Implemented**  
+Added comprehensive unit tests to ensure complete coverage of all CRUD operations:
+
+- **`testSaveCounterparty()`** – Verifies that a new counterparty is correctly saved and persisted through the repository.  
+- **`testUpdateCounterparty()`** – Validates successful updating of an existing counterparty’s attributes and persistence behavior.  
+- **`testDeleteCounterparty()`** – Confirms that the repository’s `deleteById()` method is properly invoked when deleting a counterparty.  
+- **`testDeleteCounterpartyNotFound()`** – Ensures graceful handling and no exceptions when attempting to delete a non-existent counterparty.  
+
+Additional improvements:  
+- Configured repository mocks (`CounterpartyRepository`) using `when()` and `doNothing()` Mockito patterns.  
+- Added robust assertions and `verify()` checks to confirm correct repository interactions.  
+
+
+**Files Modified**  
+- `backend/src/test/java/com/technicalchallenge/service/CounterpartyServiceTest.java`
+
+
+### 7. Environment Setup Fixes
 
 **Problem**: Java version compatibility issues causing compilation failures.
 
