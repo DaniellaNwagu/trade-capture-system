@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../components/Button";
 import {Trade, TradeLeg} from "../utils/tradeTypes";
 import CashflowModal from "./CashflowModal";
-import api from "../utils/api";
+import api, { getSettlementInstructions, updateSettlementInstructions } from "../utils/api";
 import {CashflowDTO} from "../utils/tradeTypes";
 import Snackbar from "../components/Snackbar";
 import TradeDetails from "../components/TradeDetails";
@@ -41,7 +41,26 @@ export const SingleTradeModal: React.FC<SingleTradeModalProps> = (props) => {
         setSnackbarOpen(false);
         setSnackbarMsg("");
         setSnackbarType("success");
+        
+        // Load settlement instructions if trade has an ID
+        if (props.trade?.tradeId && props.isOpen) {
+            loadSettlementInstructions(props.trade.tradeId);
+        }
     }, [props.trade, props.isOpen]);
+
+    /**
+     * Loads settlement instructions for the current trade
+     */
+    const loadSettlementInstructions = async (tradeId: string) => {
+        try {
+            const response = await getSettlementInstructions(tradeId);
+            const instructions = response.data?.instructions || '';
+            setEditableTrade(prev => prev ? { ...prev, settlementInstructions: instructions } : prev);
+        } catch {
+            // Settlement instructions might not exist, which is fine
+            console.log('No settlement instructions found for trade:', tradeId);
+        }
+    };
 
     /**
      * Handles field changes in the trade header
@@ -136,13 +155,13 @@ export const SingleTradeModal: React.FC<SingleTradeModalProps> = (props) => {
         tradeDto = convertEmptyStringsToNull(tradeDto);
 
         try {
+            let currentTradeId = editableTrade.tradeId;
+            
             if (editableTrade.tradeId) {
-
                 await api.put(`/trades/${editableTrade.tradeId}`, tradeDto);
                 setSnackbarMsg(`Trade updated successfully! Trade ID: ${editableTrade.tradeId}`);
                 setSnackbarType('success');
                 setSnackbarOpen(true);
-
 
                 const response = await api.get(`/trades/${editableTrade.tradeId}`);
                 const updatedTrade = formatDatesFromBackend(response.data);
@@ -150,10 +169,24 @@ export const SingleTradeModal: React.FC<SingleTradeModalProps> = (props) => {
             } else {
                 // Save new trade
                 const response = await api.post('/trades', tradeDto);
-                const newTradeId = response.data?.tradeId || response.data?.id || '';
-                setSnackbarMsg(`Trade saved successfully! Trade ID: ${newTradeId}`);
+                currentTradeId = response.data?.tradeId || response.data?.id || '';
+                setSnackbarMsg(`Trade saved successfully! Trade ID: ${currentTradeId}`);
                 setSnackbarType('success');
                 setSnackbarOpen(true);
+                
+                // Update the editableTrade with the new ID for settlement instructions
+                setEditableTrade(prev => prev ? { ...prev, tradeId: currentTradeId } : prev);
+            }
+
+            // Save settlement instructions if provided and we have a trade ID
+            if (currentTradeId && editableTrade.settlementInstructions && editableTrade.settlementInstructions.trim()) {
+                try {
+                    await updateSettlementInstructions(currentTradeId, editableTrade.settlementInstructions.trim());
+                } catch (settlementError) {
+                    console.warn('Failed to save settlement instructions:', settlementError);
+                    setSnackbarMsg('Trade saved but settlement instructions failed to save');
+                    setSnackbarType('error');
+                }
             }
         } catch (e) {
             setSnackbarMsg('Failed to save trade: ' + (e instanceof Error ? e.message : 'Unknown error'));

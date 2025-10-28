@@ -5,16 +5,23 @@ import Button from './Button';
 const navItems = [
     {label: 'Trade Actions', aria: 'trade-actions', parent: 'trade', param: 'actions'},
     {label: 'History', aria: 'trade-history', parent: 'trade', param: 'history'},
+    {label: 'Advanced Search', aria: 'advanced-search', parent: 'trade', param: 'search'},
+    {label: 'Dashboard', aria: 'dashboard', parent: 'trade', param: 'dashboard'},
+    {label: 'Validation', aria: 'validation', parent: 'trade', param: 'validation'},
     {label: 'User Actions', aria: 'user-actions', parent: 'admin', param: 'user-actions'},
     {label: 'All Users', aria: 'user-all', parent: 'admin', param: 'user-all'}, // Added for user history
     {label: 'Trade Actions', aria: 'trade-actions', parent: 'middle-office', param: 'actions'},
     {label: 'Static Data Management', aria: 'static-actions', parent: 'middle-office', param: 'static'},
+    {label: 'Advanced Search', aria: 'advanced-search', parent: 'middle-office', param: 'search'},
+    {label: 'Dashboard', aria: 'dashboard', parent: 'middle-office', param: 'dashboard'},
     {label: 'View Trade', aria: 'trade-actions', parent: 'support', param: 'actions'},
+    {label: 'Advanced Search', aria: 'advanced-search', parent: 'support', param: 'search'},
+    {label: 'Dashboard', aria: 'dashboard', parent: 'support', param: 'dashboard'},
 ];
 
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
 
     const handleSideBarClick = (param: string) => {
         setSearchParams({view: param});

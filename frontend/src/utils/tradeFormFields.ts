@@ -23,6 +23,7 @@ export const TRADE_FIELDS = [
     {key: "maturityDate", label: "Maturity Date", type: "date"},
     {key: "executionDate", label: "Execution Date", type: "date"},
     {key: "utiCode", label: "UTI Code", type: "input"},
+    {key: "settlementInstructions", label: "Settlement Instructions", type: "textarea"},
     {key: "lastTouchTimestamp", label: "Last Touch Timestamp", type: "date"},
     {key: "validityStartDate", label: "Version Active Since", type: "date"},
 ];

@@ -51,6 +51,20 @@ const FieldRenderer: React.FC<FieldRendererProps> = ({field, value, disabled, on
             />
         );
     }
+    if (field.type === "textarea") {
+        return (
+            <textarea
+                value={typeof value === 'string' || typeof value === 'number' ? value.toString() : ""}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onChange(e.target.value)}
+                disabled={disabled}
+                className={`${commonClass} h-20 w-64 resize-none`}
+                placeholder="Enter settlement instructions (10-500 characters)"
+                maxLength={500}
+                minLength={10}
+            />
+        );
+    }
+    
     return (
         <Input
             size="md"
