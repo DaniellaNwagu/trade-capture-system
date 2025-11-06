@@ -329,7 +329,7 @@ public class TelemetryConfiguration {
 
 #### **Multi-Region Architecture**
 ```
-Primary Region (East US 2)     Secondary Region (West Europe)
+Primary Region (West Europe)     Secondary Region (East US)
 ├── AKS Cluster (Active)  -->  ├── AKS Cluster (Standby)
 ├── SQL Database (Primary) --> ├── SQL Database (Replica)
 └── Redis Cache (Primary)  --> └── Redis Cache (Replica)
@@ -350,16 +350,16 @@ Primary Region (East US 2)     Secondary Region (West Europe)
 #### **Estimated Monthly Costs (Production)**
 | Service | Configuration | Monthly Cost |
 |---------|---------------|--------------|
-| AKS | 5 Standard_D4s_v3 nodes | $600 |
-| Azure SQL Database | Business Critical, 8 vCores | $2,400 |
-| Redis Cache | Premium P3 (26GB) | $800 |
-| Application Gateway | WAF v2, 2 instances | $400 |
-| Container Registry | Premium with geo-replication | $200 |
-| **Total Estimated Cost** | | **$4,400/month** |
+| AKS | 5 Standard_D4s_v3 nodes | £600 |
+| Azure SQL Database | Business Critical, 8 vCores | £2,400 |
+| Redis Cache | Premium P3 (26GB) | £800 |
+| Application Gateway | WAF v2, 2 instances | £400 |
+| Container Registry | Premium with geo-replication | £200 |
+| **Total Estimated Cost** | | **£4,400/month** |
 
 #### **Cost Optimization Strategies**
 - **Reserved Instances**: 40% savings on compute with 3-year commitment
-- **Auto-scaling**: Dynamic scaling based on trading hours (6 AM - 6 PM EST)
+- **Auto-scaling**: Dynamic scaling based on trading hours (6 AM - 6 PM BST)
 - **Dev/Test Pricing**: 55% discount on non-production environments  
 - **Storage Tiering**: Automatic archival of audit logs to cool storage
 - **Resource Tagging**: Cost allocation by business unit and environment
@@ -469,7 +469,7 @@ This Azure cloud architecture provides a robust, scalable, and compliant platfor
 
 The architecture is designed to support the critical nature of financial trading while providing the flexibility to scale with business growth and regulatory changes.
 
-**Total Investment**: $4,400/month for production environment
+**Total Investment**: £4,400/month for production environment
 **Implementation Timeline**: 9 weeks to production readiness
 **Business Value**: Reduced operational risk, improved trader productivity, and regulatory compliance assurance
 
