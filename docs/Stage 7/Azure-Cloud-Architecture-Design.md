@@ -72,9 +72,9 @@ rg-trading-networking-eastus2
 
 ### Complete System Architecture
 
-```
-![Complete System Architecture - Azure Design](/mnt/data/07d4f377-a8cb-4a24-8ed7-e7765c9fe435.jpg)
-```
+
+![Trading System Architecture](drawing.jpg)
+
 
 ### Detailed Architecture Components
 
